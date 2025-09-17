@@ -1,0 +1,9 @@
+{
+  "name": "frieza-backend",
+  "version": "1.0.0",
+  "description": "SIS Application",
+  "main": "app.js",
+  "repository": "https://github.com/Crein13/frieza-backend.git",
+  "author": "SaiyanDevs",
+  "license": "MIT"
+}
