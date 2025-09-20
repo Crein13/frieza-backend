@@ -11,10 +11,25 @@ export const setupSwagger = (app: Application) => {
         version: '1.0.0',
         description: 'Auto-loaded routes with Swagger docs',
       },
-      servers: [{ url: 'http://localhost:3000' }],
+      servers: [{ url: process.env.API_BASE_URL }],
+      components: {
+        securitySchemes: {
+          BearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+      security: [
+        {
+          BearerAuth: [],
+        },
+      ],
     },
     apis: ['./routes/*.ts', './controllers/*.ts'],
   };
+
 
   const swaggerSpec = swaggerJsdoc(swaggerOptions as any);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

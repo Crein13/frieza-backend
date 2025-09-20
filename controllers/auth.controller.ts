@@ -1,41 +1,50 @@
 import { Request, Response } from 'express';
 import authService from '../services/auth.service';
 
-const login = async (req: Request, res: Response) => {
-  try {
-    const tokens = await authService.login(req.body.email, req.body.password);
-    res.json(tokens);
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
+class AuthController {
+  async register(req: Request, res: Response) {
+    try {
+      const { name, email, password } = req.body;
+      const result = await authService.register(name, email, password);
+      res.status(201).json(result);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
   }
-};
 
-const register = async (req: Request, res: Response) => {
-  try {
-    const user = await authService.register(req.body);
-    res.status(201).json(user);
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
+  async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const result = await authService.login(email, password);
+      res.json(result);
+    } catch (error: any) {
+      res.status(401).json({ message: error.message });
+    }
   }
-};
 
-const logout = async (req: Request, res: Response) => {
-  try {
-    await authService.logout(req.user!.userId);
-    res.json({ message: 'Logged out successfully' });
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
+  async refreshToken(req: Request, res: Response) {
+    try {
+      const { refreshToken } = req.body;
+      if (!refreshToken) return res.status(400).json({ message: 'Refresh token required' });
+
+      const result = await authService.refreshToken(refreshToken);
+      res.json(result);
+    } catch (error: any) {
+      res.status(401).json({ message: error.message });
+    }
   }
-};
 
-const refreshToken = async (req: Request, res: Response) => {
-  try {
-    const { refreshToken } = req.body;
-    const tokens = await authService.refreshToken(req.user!.userId, refreshToken);
-    res.json(tokens);
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
+  async logout(req: Request, res: Response) {
+    try {
+      const { refreshToken } = req.body;
+      if (!refreshToken) return res.status(400).json({ message: 'Refresh token required' });
+
+      const result = await authService.logout(refreshToken);
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
   }
-};
+}
 
-export default { login, register, logout, refreshToken };
+export default new AuthController();

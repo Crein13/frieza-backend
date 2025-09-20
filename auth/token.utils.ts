@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { IUserPayload } from '../types/express';
 
-const ACCESS_SECRET = process.env.ACCESS_SECRET || 'access_secret';
-const REFRESH_SECRET = process.env.REFRESH_SECRET || 'refresh_secret';
+const ACCESS_SECRET = process.env.ACCESS_SECRET || 'your_access_token_secret';
+const REFRESH_SECRET = process.env.REFRESH_SECRET || 'your_refresh_token_secret';
 
 export const generateTokens = (payload: IUserPayload) => ({
   accessToken: jwt.sign(payload, ACCESS_SECRET, { expiresIn: '15m' }),
