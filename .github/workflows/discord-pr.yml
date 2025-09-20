@@ -1,0 +1,22 @@
+name: Notify Discord on Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened, closed, synchronize]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send PR info to Discord
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_USER="${{ github.event.pull_request.user.login }}"
+          ACTION="${{ github.event.action }}"
+          REPO="${{ github.repository }}"
+
+          curl -H "Content-Type: application/json" \
+            -d "{\"embeds\":[{\"title\":\"PR ${ACTION}: #${PR_NUMBER} ${PR_TITLE}\",\"url\":\"${PR_URL}\",\"description\":\"Author: ${PR_USER}\\nRepo: ${REPO}\",\"color\":3447003}]}" \
+            ${{ secrets.BACKEND_WEBHOOK }}
