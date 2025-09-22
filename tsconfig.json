@@ -20,13 +20,14 @@
     "sourceMap": true,                        /* Useful for debugging */
     "baseUrl": ".",                           /* Base directory for module resolution */
     "paths": {
+      "@auth/*": ["auth/*"],
       "@controllers/*": ["controllers/*"],
-      "@services/*": ["services/*"],
-      "@validations/*": ["validations/*"],
       "@middlewares/*": ["middlewares/*"],
-      "@utils/*": ["utils/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"],
       "@types/*": ["types/*"],
-      "@auth/*": ["auth/*"]
+      "@utils/*": ["utils/*"],
+      "@validations/*": ["validations/*"],
     }
   },
   "include": ["**/*.ts"],                     /* Include all TS files */
