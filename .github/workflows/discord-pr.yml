@@ -2,6 +2,10 @@ name: Notify Discord on Pull Request
 
 on:
   pull_request:
+    branches:
+      - main
+      - release
+      - develop
     types: [opened, reopened, closed, synchronize]
 
 jobs:
@@ -13,12 +17,26 @@ jobs:
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_NUMBER="${{ github.event.pull_request.number }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
-          PR_USER="${{ github.event.pull_request.user.login }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          ACTOR="${{ github.actor }}"
           ACTION="${{ github.event.action }}"
           REPO="${{ github.repository }}"
           BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
           HEAD_BRANCH="${{ github.event.pull_request.head.ref }}"
+          MERGED="${{ github.event.pull_request.merged }}"
+
+          # Decide label depending on merge status
+          if [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
+            TRIGGER_TEXT="Merged by: $ACTOR"
+            COLOR=3066993   # green
+          elif [ "$ACTION" = "closed" ]; then
+            TRIGGER_TEXT="Closed by: $ACTOR"
+            COLOR=15158332  # red
+          else
+            TRIGGER_TEXT="Triggered by: $ACTOR"
+            COLOR=3447003   # blue
+          fi
 
           curl -H "Content-Type: application/json" \
-            -d "{\"embeds\":[{\"title\":\"PR ${ACTION}: #${PR_NUMBER} ${PR_TITLE}\",\"url\":\"${PR_URL}\",\"description\":\"Author: ${PR_USER}\\nRepo: ${REPO}\\nBranch: ${HEAD_BRANCH} → ${BASE_BRANCH}\",\"color\":3447003}]}" \
+            -d "{\"embeds\":[{\"title\":\"PR ${ACTION}: #${PR_NUMBER} ${PR_TITLE}\",\"url\":\"${PR_URL}\",\"description\":\"Author: ${PR_AUTHOR}\\n${TRIGGER_TEXT}\\nRepo: ${REPO}\\nBranch: ${HEAD_BRANCH} → ${BASE_BRANCH}\",\"color\":${COLOR}}]}" \
             ${{ secrets.BACKEND_WEBHOOK }}
