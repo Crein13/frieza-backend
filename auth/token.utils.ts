@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { IUserPayload } from '../types/express';
+import { IUserPayload } from '@types/express';
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET || 'your_access_token_secret';
 const REFRESH_SECRET = process.env.REFRESH_SECRET || 'your_refresh_token_secret';

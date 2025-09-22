@@ -1,5 +1,5 @@
-import prisma from '../prisma/client';
-import { hashPassword } from '../utils/crypto';
+import prisma from '@/prisma/client';
+import { hashPassword } from '@utils/crypto';
 
 interface IUserUpdate {
   email?: string;

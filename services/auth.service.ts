@@ -1,8 +1,8 @@
-import prisma from '../prisma/client';
-import redisClient from '../sessions/redisClient';
-import { generateTokens, verifyRefreshToken } from '../auth/token.utils';
-import { IUserPayload } from '../types/express';
-import { hashPassword, comparePassword } from '../utils/crypto';
+import prisma from '@/prisma/client';
+import redisClient from '@/sessions/redisClient';
+import { generateTokens, verifyRefreshToken } from '@auth/token.utils';
+import { IUserPayload } from '@types/express';
+import { hashPassword, comparePassword } from '@utils/crypto';
 
 class AuthService {
   async register(name: string, email: string, password: string) {

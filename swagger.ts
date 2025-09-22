@@ -27,7 +27,7 @@ export const setupSwagger = (app: Application) => {
         },
       ],
     },
-    apis: ['./routes/*.ts', './controllers/*.ts'],
+    apis: ['./routes/**/*.ts', './controllers/*.ts'],
   };
 
 

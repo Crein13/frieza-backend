@@ -17,8 +17,18 @@
     /* Output */
     "outDir": "dist",                         /* Compiled output dir */
     "rootDir": "./",                          /* Project root for source files */
-    "sourceMap": true                         /* Useful for debugging */
+    "sourceMap": true,                        /* Useful for debugging */
+    "baseUrl": ".",                           /* Base directory for module resolution */
+    "paths": {
+      "@controllers/*": ["controllers/*"],
+      "@services/*": ["services/*"],
+      "@validations/*": ["validations/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@utils/*": ["utils/*"],
+      "@types/*": ["types/*"],
+      "@auth/*": ["auth/*"]
+    }
   },
   "include": ["**/*.ts"],                     /* Include all TS files */
-  "exclude": ["node_modules", "dist"]         /* Don’t compile build output */
+  "exclude": ["node_modules", "dist"]        /* Don’t compile build output */
 }

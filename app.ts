@@ -11,15 +11,30 @@ app.use(express.urlencoded({ extended: true }));
 
 // ===== Dynamic Route Loader =====
 const routesPath = path.join(__dirname, 'routes');
-if (fs.existsSync(routesPath)) {
-  fs.readdirSync(routesPath).forEach((file) => {
-    if (file.endsWith('.routes.ts')) {
-      const { path: routePath, router } = require(path.join(routesPath, file));
-      app.use(routePath, router);
-      console.log(`Loaded route: ${routePath}`);
-    }
-  });
-}
+
+const loadRoutes = (directory: string) => {
+  if (fs.existsSync(directory)) {
+    fs.readdirSync(directory).forEach((file) => {
+      const fullPath = path.join(directory, file);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        loadRoutes(fullPath);
+      } else if (file.endsWith('.routes.ts')) {
+        try {
+          const { path: routePath, router } = require(fullPath);
+          if (routePath && router) {
+            app.use(routePath, router);
+            console.log(`Loaded route: ${routePath} from ${file}`);
+          }
+        } catch (error) {
+          console.error(`Failed to load route ${file}:`, error);
+        }
+      }
+    });
+  }
+};
+
+loadRoutes(routesPath);
 
 // ===== Data Loader Example =====
 const dataPath = path.join(__dirname, 'data');

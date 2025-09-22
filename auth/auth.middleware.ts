@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from '../auth/token.utils';
-import { IUserPayload } from '../types/express';
-import redisClient from '../sessions/redisClient';
+import { verifyAccessToken } from '@auth/token.utils';
+import { IUserPayload } from '@types/express';
+import redisClient from '@/sessions/redisClient';
 
 export default async function authMiddleware(
   req: Request,
