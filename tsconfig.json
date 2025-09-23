@@ -28,6 +28,10 @@
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"],
       "@validations/*": ["validations/*"],
+      "@prisma/*": ["prisma/*"],
+      "@config/*": ["config/*"],
+      "@sessions/*": ["sessions/*"],
+      "@tests/*": ["tests/*"],
     }
   },
   "include": ["**/*.ts"],                     /* Include all TS files */

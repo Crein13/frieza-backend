@@ -1,5 +1,5 @@
-import prisma from '@/prisma/client';
-import redisClient from '@/sessions/redisClient';
+import prisma from '@prisma/client';
+import redisClient from '@sessions/redisClient';
 import { generateTokens, verifyRefreshToken } from '@auth/token.utils';
 import { IUserPayload } from '@types/express';
 import { hashPassword, comparePassword } from '@utils/crypto';

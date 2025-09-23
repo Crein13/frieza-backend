@@ -1,4 +1,4 @@
-import prisma from '@/prisma/client';
+import prisma from '@prisma/client';
 import { hashPassword } from '@utils/crypto';
 
 interface IUserUpdate {
