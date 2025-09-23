@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2022",                       /* Use modern JS output */
+    "lib": ["ES2022"],                        /* Include modern lib definitions */
+    "module": "NodeNext",                     /* ESM module system */
+    "moduleResolution": "NodeNext",           /* Required with NodeNext */
+    "allowJs": false,                         /* Only allow TS files */
+    "resolveJsonModule": true,                /* Allow importing JSON files */
+    "esModuleInterop": true,                  /* Interop for CommonJS */
+    "forceConsistentCasingInFileNames": true, /* Avoid case mismatches */
+
+    /* Type Checking */
+    "strict": true,                           /* Enable all strict checks */
+    "skipLibCheck": true,                     /* Skip .d.ts type checks for faster builds */
+
+    /* Output */
+    "outDir": "dist",                         /* Compiled output dir */
+    "rootDir": "./",                          /* Project root for source files */
+    "sourceMap": true,                        /* Useful for debugging */
+    "baseUrl": ".",                           /* Base directory for module resolution */
+    "paths": {
+      "@auth/*": ["auth/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"],
+      "@validations/*": ["validations/*"],
+      "@prisma/*": ["prisma/*"],
+      "@config/*": ["config/*"],
+      "@sessions/*": ["sessions/*"],
+      "@tests/*": ["tests/*"],
+    }
+  },
+  "include": ["**/*.ts"],                     /* Include all TS files */
+  "exclude": ["node_modules", "dist"]        /* Don’t compile build output */
+}
