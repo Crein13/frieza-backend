@@ -1,3 +1,4 @@
+// schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,23 +8,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// =======================
+// PostgreSQL Core Entities
+// =======================
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  name      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  user_id       String          @id @default(uuid()) @db.Uuid
+  name          String
+  email         String          @unique
+  password_hash String
+  created_at    DateTime        @default(now())
 
-  // relations
-  refreshTokens RefreshToken[]
+  roles         UserRole[]
+  student       StudentProfile?
+  faculty       FacultyProfile?
+  admin         AdminProfile?
+  // auditLogs   AuditLog[]      // stored in BigQuery, not Postgres
 }
 
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  expiresAt DateTime
+model Role {
+  role_id   String     @id @default(uuid()) @db.Uuid
+  role_name String
+
+  users     UserRole[]
 }
+
+model UserRole {
+  user_role_id String @id @default(uuid()) @db.Uuid
+  user_id      String @db.Uuid
+  role_id      String @db.Uuid
+
+  user User @relation(fields: [user_id], references: [user_id])
+  role Role @relation(fields: [role_id], references: [role_id])
+}
+
+model StudentProfile {
+  student_id      String    @id @default(uuid()) @db.Uuid
+  user_id         String    @unique @db.Uuid
+  grade_level     String
+  enrollment_date DateTime
+
+  user        User       @relation(fields: [user_id], references: [user_id])
+  enrollments Enrollment[]
+}
+
+model FacultyProfile {
+  faculty_id String   @id @default(uuid()) @db.Uuid
+  user_id    String   @unique @db.Uuid
+  department String
+  hire_date  DateTime
+
+  user    User     @relation(fields: [user_id], references: [user_id])
+  courses Course[]
+}
+
+model AdminProfile {
+  admin_id     String @id @default(uuid()) @db.Uuid
+  user_id      String @unique @db.Uuid
+  access_level String
+
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Course {
+  course_id   String   @id @default(uuid()) @db.Uuid
+  course_name String
+  course_code String   @unique
+  faculty_id  String   @db.Uuid
+
+  faculty     FacultyProfile @relation(fields: [faculty_id], references: [faculty_id])
+  enrollments Enrollment[]
+}
+
+model Enrollment {
+  enrollment_id String  @id @default(uuid()) @db.Uuid
+  student_id    String  @db.Uuid
+  course_id     String  @db.Uuid
+  semester      String
+  grade         String?
+
+  student StudentProfile @relation(fields: [student_id], references: [student_id])
+  course  Course         @relation(fields: [course_id], references: [course_id])
+}
+
+// =======================
+// BigQuery AuditLogs (Commented Out)
+// =======================
+//
+// model AuditLog {
+//   log_id      String   @id @default(uuid()) @db.Uuid
+//   user_id     String   @db.Uuid
+//   action      String
+//   entity_type String
+//   entity_id   String   @db.Uuid
+//   details     Json
+//   user_agent  String?
+//   created_at  DateTime @default(now())
+//
+//   // This should live in BigQuery, not Postgres
+// }
