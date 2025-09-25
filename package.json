@@ -5,6 +5,7 @@
   "repository": "https://github.com/project-frieza/frieza-backend.git",
   "author": "crein13 <benz.matias13@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "tsx index.ts",
     "dev": "tsx watch index.ts"
