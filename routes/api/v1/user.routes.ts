@@ -1,12 +1,9 @@
 import { Router } from 'express';
+import controller from '@/controllers/v1/users/user.controller.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  console.log('User list route');
-  res.json([{ id: 1, name: 'John Doe' }, { id: 2, name: 'Jane Doe' }]);
-  return;
-});
+router.get('/', controller.get);
 
 export const path = '/users';
 export { router };
