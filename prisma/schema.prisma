@@ -1,4 +1,9 @@
-// schema.prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -22,7 +27,6 @@ model User {
   student       StudentProfile?
   faculty       FacultyProfile?
   admin         AdminProfile?
-  // auditLogs   AuditLog[]      // stored in BigQuery, not Postgres
 }
 
 model Role {
@@ -89,20 +93,3 @@ model Enrollment {
   student StudentProfile @relation(fields: [student_id], references: [student_id])
   course  Course         @relation(fields: [course_id], references: [course_id])
 }
-
-// =======================
-// BigQuery AuditLogs (Commented Out)
-// =======================
-//
-// model AuditLog {
-//   log_id      String   @id @default(uuid()) @db.Uuid
-//   user_id     String   @db.Uuid
-//   action      String
-//   entity_type String
-//   entity_id   String   @db.Uuid
-//   details     Json
-//   user_agent  String?
-//   created_at  DateTime @default(now())
-//
-//   // This should live in BigQuery, not Postgres
-// }
