@@ -1,11 +1,15 @@
 import express from 'express';
 import helmet from 'helmet';
 import type { Application, Request, Response } from 'express';
+import { __env } from '@/globals.js';
 import buildRoutes from '@/routes/index.js';
+const authConfig = await import(`./config/${__env}/auth.js`);
 
 const app: Application = express();
 
 app.use(helmet());
+
+app.use(authConfig.default);
 
 app.get('/test-endpoint', (_req: Request, res: Response) => {
   res.send('API is running 🚀');
